@@ -18,8 +18,8 @@ def show_paper_summary(paper_content):
         os.environ["OPENAI_API_KEY"] = input("Enter your OpenAI API key here: ")
 
         # After the user enters the API key, save it to the `.env` file
-        with open(".env", "a", encoding="utf-8") as file:
-            file.write(f"OPENAI_API_KEY={os.environ.get('OPENAI_API_KEY')}")
+        with open(".env", "a", encoding="utf-8") as file_name:
+            file_name.write(f"OPENAI_API_KEY={os.environ.get('OPENAI_API_KEY')}")
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     for page in paper_content:
