@@ -12,6 +12,14 @@ def show_paper_summary(paper_content):
     Display the paper summary in the terminal.
     """
     tldr_tag = "\n tl;dr:"
+
+    # If the user has not entered the API key, ask for it
+    if os.environ.get("OPENAI_API_KEY") is None:
+        os.environ["OPENAI_API_KEY"] = input("Enter your OpenAI API key here: ")
+
+        # After the user enters the API key, save it to the `.env` file
+        with open(".env", "a", encoding="utf-8") as file:
+            file.write(f"OPENAI_API_KEY={os.environ.get('OPENAI_API_KEY')}")
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     for page in paper_content:
@@ -26,6 +34,7 @@ def show_paper_summary(paper_content):
             presence_penalty=0,
             stop=["\n"],
         )
+        print("\033[1m" + "Paper Summary:" + "\033[0m")
         print(response["choices"][0]["text"])
 
 
