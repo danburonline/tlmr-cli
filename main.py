@@ -38,5 +38,7 @@ def show_paper_summary(paper_content):
         print(response["choices"][0]["text"])
 
 
-paperContent = pdfplumber.open("example.pdf").pages
-show_paper_summary(paperContent)
+for file in os.listdir():
+    if file.endswith(".pdf"):
+        paperContent = pdfplumber.open(file).pages
+        show_paper_summary(paperContent)
