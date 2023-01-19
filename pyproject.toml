@@ -10,9 +10,7 @@ packages = [{include = "tlmr_digest"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 openai = "^0.26.1"
-wget = "^3.2"
 pdfplumber = "^0.7.6"
-numpy = "^1.24.1"
 python-dotenv = "^0.21.0"
 
 
