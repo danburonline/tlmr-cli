@@ -1,5 +1,14 @@
 {
-  "cSpell.words": ["dotenv", "logit", "logprobs", "openai", "tldr", "TLMR"],
+  "cSpell.words": [
+    "dotenv",
+    "loadpdf",
+    "logit",
+    "logprobs",
+    "openai",
+    "parsepdfpage",
+    "tldr",
+    "TLMR"
+  ],
   "deno.enable": true,
   "deno.unstable": true
 }

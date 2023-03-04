@@ -1,6 +1,6 @@
 {
   "name": "@danburonline/tlmr-cli",
   "scripts": {
-    "dev": "deno run --allow-env --allow-sys --allow-net --allow-read index.ts"
+    "dev": "deno run --allow-env --allow-sys --allow-net --allow-read --allow-write index.ts"
   }
 }
