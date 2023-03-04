@@ -1,28 +1,34 @@
-import { Configuration, OpenAIApi } from 'openai';
+import { getCompletionStream } from 'https://deno.land/x/openai_chat_stream@1.0.0/mod.ts';
 import 'https://deno.land/x/dotenv@v3.2.2/load.ts';
 
-const configuration = new Configuration({
-  apiKey: Deno.env.get('OPENAI_API_KEY'),
-});
+if (!Deno.env.get('OPENAI_API_KEY')) {
+  const apiKeyInput = prompt('Please enter your OpenAI API key:');
 
-const openai = new OpenAIApi(configuration);
+  if (apiKeyInput) {
+    Deno.env.set('OPENAI_API_KEY', apiKeyInput);
+  }
+}
 
-// Prompt the user for input
 const userInput = prompt('What do you want to ask?');
 
 try {
-  const completion = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
+  const stream = getCompletionStream({
+    apiKey: Deno.env.get('OPENAI_API_KEY') || '',
     messages: [
       {
         role: 'user',
         content: userInput ? userInput : 'Fallback message',
-        name: 'Daniel',
       },
     ],
   });
 
-  console.log(completion.data.choices[0].message?.content);
+  let response = '';
+
+  for await (const token of stream) {
+    response += token;
+  }
+
+  console.log(response);
 } catch (error) {
   console.error(error);
 }

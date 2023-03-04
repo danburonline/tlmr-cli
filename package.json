@@ -2,8 +2,5 @@
   "name": "@danburonline/tlmr-cli",
   "scripts": {
     "dev": "deno run --allow-env --allow-sys --allow-net --allow-read index.ts"
-  },
-  "dependencies": {
-    "openai": "3.2.1"
   }
 }

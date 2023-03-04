@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["dotenv", "openai", "tldr", "TLMR"],
+  "cSpell.words": ["dotenv", "logit", "logprobs", "openai", "tldr", "TLMR"],
   "deno.enable": true,
   "deno.unstable": true
 }
