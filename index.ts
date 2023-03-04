@@ -7,13 +7,16 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+// Prompt the user for input
+const userInput = prompt('What do you want to ask?');
+
 try {
   const completion = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [
       {
         role: 'user',
-        content: 'What is the meaning of life?',
+        content: userInput ? userInput : 'Fallback message',
         name: 'Daniel',
       },
     ],
