@@ -1,19 +1,23 @@
 import { getCompletionStream } from 'https://deno.land/x/openai_chat_stream@1.0.0/mod.ts';
 import 'https://deno.land/x/dotenv@v3.2.2/load.ts';
 
-if (!Deno.env.get('OPENAI_API_KEY')) {
-  const apiKeyInput = prompt('Please enter your OpenAI API key:');
+const apiKeyArg = Deno.args.find((arg) => arg.startsWith('--api-key='));
+const apiKey = apiKeyArg
+  ? apiKeyArg.split('=')[1]
+  : Deno.env.get('OPENAI_API_KEY');
 
-  if (apiKeyInput) {
-    Deno.env.set('OPENAI_API_KEY', apiKeyInput);
-  }
+if (!apiKey) {
+  console.error(
+    'Please provide an OpenAI API key using the --api-key flag or by setting the OPENAI_API_KEY environment variable.'
+  );
+  Deno.exit(1);
 }
 
 const userInput = prompt('What do you want to ask?');
 
 try {
   const stream = getCompletionStream({
-    apiKey: Deno.env.get('OPENAI_API_KEY') || '',
+    apiKey,
     messages: [
       {
         role: 'user',
