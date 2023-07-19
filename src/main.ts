@@ -24,7 +24,7 @@ if (!options.file) {
   process.exit(1)
 }
 
-const processPdf = async (pdfFilePath: string) => {
+const processPdf = async (pdfFilePath: string, outputDirectory: string) => {
   const pdfBuffer = Buffer.from(await Bun.file(pdfFilePath).arrayBuffer())
 
   let pdfText = await pdf(pdfBuffer).then(function (data: any) {
@@ -58,10 +58,10 @@ const processPdf = async (pdfFilePath: string) => {
 
   // Create the PDF document
   const doc = new PDFDocument()
-  const outputFilePath = `${path.basename(
-    pdfFilePath,
-    path.extname(pdfFilePath)
-  )}_summary.pdf`
+  const outputFilePath = path.join(
+    outputDirectory,
+    `${path.basename(pdfFilePath, path.extname(pdfFilePath))}_summary.pdf`
+  )
   doc.pipe(fs.createWriteStream(outputFilePath))
   doc.fontSize(11).text(result.text, 100, 100)
   doc.end()
@@ -79,14 +79,17 @@ fs.lstat(filePath, (err, stats) => {
         console.error(`Error reading the directory: ${err}`)
         process.exit(1)
       }
-      files.forEach((file) => {
-        if (path.extname(file) === '.pdf') {
-          processPdf(path.join(filePath, file))
-        }
-      })
+      const pdfFiles = files.filter((file) => path.extname(file) === '.pdf')
+      if (pdfFiles.length === 0) {
+        console.warn('The directory does not contain any PDF files.')
+        process.exit(1)
+      }
+      pdfFiles.forEach((file) =>
+        processPdf(path.join(filePath, file), filePath)
+      )
     })
   } else if (path.extname(filePath) === '.pdf') {
-    processPdf(filePath)
+    processPdf(filePath, path.dirname(filePath))
   } else {
     console.error('Provided path is not a PDF file or a directory.')
     process.exit(1)
