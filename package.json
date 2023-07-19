@@ -1,11 +1,19 @@
 {
   "name": "@danburonline/tlmr-cli",
   "dependencies": {
-    "langchain": "0.0.112"
+    "langchain": "0.0.112",
+    "pdf-parse": "^1.1.1"
   },
-  "module": "index.ts",
+  "scripts": {
+    "start": "bun run src/main.ts"
+  },
+  "module": "src/main.ts.ts",
+  "include": [
+    "src/**/*.ts"
+  ],
   "type": "module",
   "devDependencies": {
+    "@types/pdf-parse": "^1.1.1",
     "bun-types": "latest"
   },
   "peerDependencies": {

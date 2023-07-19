@@ -5,17 +5,24 @@ import {
   SystemMessagePromptTemplate,
   HumanMessagePromptTemplate,
 } from 'langchain/prompts'
+// @ts-ignore – There is an issue with the types for this package
+import pdf from 'pdf-parse/lib/pdf-parse'
+
+const dataBuffer = await Bun.file('./examples/example-paper.pdf').arrayBuffer()
+const pdfBuffer = Buffer.from(dataBuffer)
+let pdfText = await pdf(pdfBuffer).then(function (data: any) {
+  return data.text
+})
 
 const template =
-  'You are a helpful assistant that translates {input_language} to {output_language}.'
+  'You are a helpful scientific assistant that summarises papers in the IMRaD structure to concise summaries.'
 const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(template)
-const humanTemplate = '{text}'
-const humanMessagePrompt =
-  HumanMessagePromptTemplate.fromTemplate(humanTemplate)
+const inputText = '{text}'
+const inputTextPrompt = HumanMessagePromptTemplate.fromTemplate(inputText)
 
 const chatPrompt = ChatPromptTemplate.fromPromptMessages([
   systemMessagePrompt,
-  humanMessagePrompt,
+  inputTextPrompt,
 ])
 
 const chat = new ChatOpenAI({
@@ -28,9 +35,7 @@ const chain = new LLMChain({
 })
 
 const result = await chain.call({
-  input_language: 'English',
-  output_language: 'French',
-  text: 'I love programming',
+  text: pdfText,
 })
 
 console.log(result)
