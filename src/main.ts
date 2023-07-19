@@ -10,8 +10,10 @@ import {
   HumanMessagePromptTemplate,
 } from 'langchain/prompts'
 
-const dataBuffer = await Bun.file('./examples/example-paper.pdf').arrayBuffer()
-const pdfBuffer = Buffer.from(dataBuffer)
+const pdfBuffer = Buffer.from(
+  await Bun.file('./examples/example-paper.pdf').arrayBuffer()
+)
+
 let pdfText = await pdf(pdfBuffer).then(function (data: any) {
   return data.text
 })
@@ -36,6 +38,7 @@ const chain = new LLMChain({
   prompt: chatPrompt,
 })
 
+// Get the results from the LLM API
 const result = await chain.call({
   text: pdfText,
 })
