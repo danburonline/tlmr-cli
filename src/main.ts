@@ -42,6 +42,33 @@ const processPdf = async (pdfFilePath: string, outputDirectory: string) => {
     return data.text
   })
 
+  // Split the text into sections based on headers
+  const sections = pdfText.split(/\n(?=[A-Z][a-z]+)/)
+
+  // Keep only the sections you're interested in
+  const includedSections = [
+    'Abstract',
+    'Introduction',
+    'Results',
+    'Conclusion',
+    'Methodology',
+  ]
+  const filteredSections = sections.filter((section: string) =>
+    includedSections.some((includedSection) =>
+      new RegExp(`^${includedSection}s?`, 'i').test(section)
+    )
+  )
+
+  // Remove lines that look like figure or table captions
+  const filteredText = filteredSections
+    .map((section: string) =>
+      section
+        .split('\n')
+        .filter((line) => !/^(Figure|Fig) \d+|^Table \d+/i.test(line))
+        .join('\n')
+    )
+    .join('\n')
+
   const template =
     'You are a helpful scientific assistant that summarises papers in the IMRaD structure to concise summaries.'
   const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(template)
@@ -64,7 +91,7 @@ const processPdf = async (pdfFilePath: string, outputDirectory: string) => {
 
   // Get the results from the LLM API
   const result = await chain.call({
-    text: pdfText,
+    text: filteredText,
   })
 
   // Create the PDF document
