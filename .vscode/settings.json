@@ -1,3 +1,16 @@
 {
-  "cSpell.words": ["davinci", "dotenv", "openai", "pdfplumber", "tldr", "TLMR"]
+  "cSpell.words": [
+    "dotenv",
+    "langchain",
+    "llms",
+    "loadpdf",
+    "logit",
+    "logprobs",
+    "openai",
+    "parsepdfpage",
+    "tldr",
+    "TLMR"
+  ],
+  "deno.enable": true,
+  "deno.unstable": true
 }

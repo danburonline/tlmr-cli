@@ -1,0 +1,25 @@
+{
+  "name": "@danburonline/tlmr-cli",
+  "dependencies": {
+    "commander": "11.0.0",
+    "langchain": "0.0.112",
+    "pdf-parse": "1.1.1",
+    "pdfkit": "0.13.0"
+  },
+  "scripts": {
+    "start": "bun run src/main.ts"
+  },
+  "module": "src/main.ts.ts",
+  "include": [
+    "src/**/*.ts"
+  ],
+  "type": "module",
+  "devDependencies": {
+    "@types/pdf-parse": "1.1.1",
+    "@types/pdfkit": "0.12.10",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "5.0.0"
+  }
+}
