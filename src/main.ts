@@ -1,16 +1,16 @@
 import { Command } from 'commander'
-// @ts-ignore
-import pdf from 'pdf-parse/lib/pdf-parse'
-import fs from 'node:fs'
-import path from 'node:path'
-import PDFDocument from 'pdfkit'
-import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { LLMChain } from 'langchain/chains'
+import { ChatOpenAI } from 'langchain/chat_models/openai'
 import {
   ChatPromptTemplate,
-  SystemMessagePromptTemplate,
   HumanMessagePromptTemplate,
+  SystemMessagePromptTemplate,
 } from 'langchain/prompts'
+import fs from 'node:fs'
+import path from 'node:path'
+// @ts-expect-error
+import pdf from 'pdf-parse/lib/pdf-parse'
+import PDFDocument from 'pdfkit'
 
 const program = new Command()
 program.option('-f, --file <path>', 'PDF file or directory path')
