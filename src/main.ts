@@ -13,8 +13,10 @@ import pdf from 'pdf-parse/lib/pdf-parse'
 import PDFDocument from 'pdfkit'
 
 const program = new Command()
-program.option('-f, --file <path>', 'PDF file or directory path')
-program.parse(process.argv)
+program
+  .option('-f, --file <path>', 'PDF file or directory path')
+  .option('-k, --key <key>', 'OpenAI API key')
+  .parse(process.argv)
 
 const options = program.opts()
 if (!options.file) {
@@ -23,6 +25,15 @@ if (!options.file) {
   )
   process.exit(1)
 }
+
+if (!process.env.OPENAI_API_KEY && !options.key) {
+  console.warn(
+    'Please provide your OPENAI_API_KEY as an environment variable or use the -k flag.'
+  )
+  process.exit(1)
+}
+
+process.env.OPENAI_API_KEY = process.env.OPENAI_API_KEY || options.key
 
 const processPdf = async (pdfFilePath: string, outputDirectory: string) => {
   const pdfBuffer = Buffer.from(await Bun.file(pdfFilePath).arrayBuffer())
