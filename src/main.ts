@@ -1,3 +1,7 @@
+// @ts-ignore – There is an issue with the types for this package
+import pdf from 'pdf-parse/lib/pdf-parse'
+import fs from 'node:fs' // Use node:fs to make pdf-kit work with Bun
+import PDFDocument from 'pdfkit'
 import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { LLMChain } from 'langchain/chains'
 import {
@@ -5,8 +9,6 @@ import {
   SystemMessagePromptTemplate,
   HumanMessagePromptTemplate,
 } from 'langchain/prompts'
-// @ts-ignore – There is an issue with the types for this package
-import pdf from 'pdf-parse/lib/pdf-parse'
 
 const dataBuffer = await Bun.file('./examples/example-paper.pdf').arrayBuffer()
 const pdfBuffer = Buffer.from(dataBuffer)
@@ -38,4 +40,8 @@ const result = await chain.call({
   text: pdfText,
 })
 
-console.log(result)
+// Create the PDF document
+const doc = new PDFDocument()
+doc.pipe(fs.createWriteStream('summary.pdf'))
+doc.fontSize(11).text(result.text, 100, 100)
+doc.end()
